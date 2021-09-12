@@ -1,4 +1,18 @@
 # PythonGameProject
+## Introduction
+
+This is a game project written in Python. I don't know what to create so I just write a simple game.
+
+## Usage
+
+- Download and install Python (you can get Python via <https://www.python.org/downloads/>).
+- Install Pygame by pip, a command in Python toolkit. Input `pip install pygame` in the terminal (or command line in Windows OS).
+- Jump to the root directory of this project in the terminal.
+- Run the game by typing `python main.py` in the terminal.
+
+---
+
+# PythonGameProject中文说明书
 ## 简介
 
 这是一个用Python编程语言做的游戏，还不清楚要做什么，所以随便做一个简单的模型。
