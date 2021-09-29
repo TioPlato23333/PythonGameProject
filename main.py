@@ -3,43 +3,22 @@
 #
 # Created by Tio Plato
 #
-# Copyright (TM) 2019 Tio Plato. All rights reserved.
+# Copyright (c) 2021 Tio Plato. All rights reserved.
 #
 # This is game main file. Usage: python main.py.
 
 import pygame
 import sys
 
-class Sprite:
-    def __init__(self, name, x, y, width, height, visibility = False):
-        self.name = name
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.resource = pygame.Surface([width, height])
-        self.visibility = visibility
+import MofuEngine
 
-class Canvas:
-    def __init__(self, name, width, height, sprites):
-        self.name = name
-        self.width = width
-        self.height = height
-        self.sprites = sprites
-        self.display = pygame.display.set_mode([width, height])
-
-    def UpdateCanvas(self):
-        for sprite in self.sprites:
-            if sprite.visibility:
-                self.display.blit(sprite.resource, [sprite.x, sprite.y])
-
-class ChessSprite(Sprite):
+class ChessSprite(MofuEngine.Sprite):
     def __init__(self, name, x, y, width, height, is_piece = True, visibility = False):
         # chess has 2 types of sprites: chess piece or winner mark
         self.is_piece = is_piece
         super().__init__(name, x, y, width, height, visibility)
 
-class ChessBoard(Canvas):
+class ChessBoard(MofuEngine.Canvas):
     def __init__(self, background, player1, player2, row_mark, col_mark, diag_mark1, diag_mark2):
         # resources
         self.background = background
@@ -61,28 +40,28 @@ class ChessBoard(Canvas):
         # order * 2 ~ order * 2 + 1 means one player wins at diag 1/2
         self.wintype = -1
         sprites_list = []
-        background_sprite = ChessSprite("background", 0, 0, 640, 360, False, True)
+        background_sprite = ChessSprite('background', 0, 0, 640, 360, False, True)
         background_sprite.resource = background
         sprites_list.append(background_sprite)
-        sprites_list.append(ChessSprite("piece11", 190, 40, 100, 100))
-        sprites_list.append(ChessSprite("piece12", 290, 40, 100, 100))
-        sprites_list.append(ChessSprite("piece13", 390, 40, 100, 100))
-        sprites_list.append(ChessSprite("piece21", 190, 140, 100, 100))
-        sprites_list.append(ChessSprite("piece22", 290, 140, 100, 100))
-        sprites_list.append(ChessSprite("piece23", 390, 140, 100, 100))
-        sprites_list.append(ChessSprite("piece31", 190, 240, 100, 100))
-        sprites_list.append(ChessSprite("piece32", 290, 240, 100, 100))
-        sprites_list.append(ChessSprite("piece33", 390, 240, 100, 100))
-        sprites_list.append(ChessSprite("winner_mark_hor_1", 215, 40, 300, 100, False))
-        sprites_list.append(ChessSprite("winner_mark_hor_2", 215, 140, 300, 100, False))
-        sprites_list.append(ChessSprite("winner_mark_hor_3", 215, 240, 300, 100, False))
-        sprites_list.append(ChessSprite("winner_mark_ver_1", 190, 60, 100, 300, False))
-        sprites_list.append(ChessSprite("winner_mark_ver_2", 290, 60, 100, 300, False))
-        sprites_list.append(ChessSprite("winner_mark_ver_3", 390, 60, 100, 300, False))
-        sprites_list.append(ChessSprite("winner_mark_diag_1", 215, 60, 300, 300, False))
-        sprites_list.append(ChessSprite("winner_mark_diag_2", 215, 60, 300, 300, False))
+        sprites_list.append(ChessSprite('piece11', 190, 40, 100, 100))
+        sprites_list.append(ChessSprite('piece12', 290, 40, 100, 100))
+        sprites_list.append(ChessSprite('piece13', 390, 40, 100, 100))
+        sprites_list.append(ChessSprite('piece21', 190, 140, 100, 100))
+        sprites_list.append(ChessSprite('piece22', 290, 140, 100, 100))
+        sprites_list.append(ChessSprite('piece23', 390, 140, 100, 100))
+        sprites_list.append(ChessSprite('piece31', 190, 240, 100, 100))
+        sprites_list.append(ChessSprite('piece32', 290, 240, 100, 100))
+        sprites_list.append(ChessSprite('piece33', 390, 240, 100, 100))
+        sprites_list.append(ChessSprite('winner_mark_hor_1', 215, 40, 300, 100, False))
+        sprites_list.append(ChessSprite('winner_mark_hor_2', 215, 140, 300, 100, False))
+        sprites_list.append(ChessSprite('winner_mark_hor_3', 215, 240, 300, 100, False))
+        sprites_list.append(ChessSprite('winner_mark_ver_1', 190, 60, 100, 300, False))
+        sprites_list.append(ChessSprite('winner_mark_ver_2', 290, 60, 100, 300, False))
+        sprites_list.append(ChessSprite('winner_mark_ver_3', 390, 60, 100, 300, False))
+        sprites_list.append(ChessSprite('winner_mark_diag_1', 215, 60, 300, 300, False))
+        sprites_list.append(ChessSprite('winner_mark_diag_2', 215, 60, 300, 300, False))
         # sprites list, stores the sprite we need in the game
-        super().__init__("tic_tac_toe", 640, 360, sprites_list)
+        super().__init__('tic_tac_toe', 640, 360, sprites_list)
 
     def CheckClick(self, x, y):
         # stop the game if one of the player has won
@@ -90,20 +69,20 @@ class ChessBoard(Canvas):
             return False # invlaid click, don't check winner
 
         index = 0
-        piece_pos = {"x": int(-1), "y": int(-1)}
+        piece_pos = {'x': int(-1), 'y': int(-1)}
         for sprite in self.sprites:
             if sprite.is_piece and \
                x > sprite.x and x < sprite.x + sprite.width and \
                y > sprite.y and y < sprite.y + sprite.height:
-                piece_pos["x"] = int((index - 1) % self.order)
-                piece_pos["y"] = int((index - 1) / self.order)
+                piece_pos['x'] = int((index - 1) % self.order)
+                piece_pos['y'] = int((index - 1) / self.order)
                 break
             index += 1
 
         # place a piece if this area is empty
-        if piece_pos["x"] >= 0 and piece_pos["y"] >= 0 and \
-           self.board[piece_pos["y"]][piece_pos["x"]] < 0:
-            self.board[piece_pos["y"]][piece_pos["x"]] = self.turn
+        if piece_pos['x'] >= 0 and piece_pos['y'] >= 0 and \
+           self.board[piece_pos['y']][piece_pos['x']] < 0:
+            self.board[piece_pos['y']][piece_pos['x']] = self.turn
             return True # valid, check winner then
         return False
 
