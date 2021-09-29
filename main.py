@@ -186,6 +186,8 @@ if __name__ == '__main__':
         diag_mark1 = pygame.image.load('resources/diagonal1.png'),
         diag_mark2 = pygame.image.load('resources/diagonal2.png')
     )
+    # add a clock for fps control
+    clock = pygame.time.Clock()
 
     # render the game window
     while True:
@@ -211,3 +213,9 @@ if __name__ == '__main__':
         chess.UpdateCanvas()
 
         pygame.display.flip()
+
+        # can also get the real time cost for 60 FPS and do something more e.g.:
+        # dt = clock.tick(60)
+        # player.position.x += player.xSpeed * dt
+        # player.position.y += player.ySpeed * dt
+        clock.tick(60)
